@@ -17,12 +17,12 @@ class Drawing
   def get_name
   end
 
-  def refresh(hands)
+  def refresh(hands, msg)
     system 'cls'
     print_logo
     print_layout(hands)
     print_line
-    print_s "\t Взять ещё карту (Y/N)? "; puts
+    print_s "\t #{msg} "; puts
     print_line
   end
   
@@ -71,7 +71,7 @@ class Drawing
         end
         if hand.score > 0
           str << "\t РЕЗУЛЬТАТ:" if i == 3
-          str << "\t #{hand.score}" if i == 4
+          str << "\t #{hand.score} #{"X !ПЕРЕБОР!" if hand.score > 21}" if i == 4
         end
         puts str.join(' ')
       end
