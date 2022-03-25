@@ -5,17 +5,17 @@ class Card
     @opened = false
     @rating = rating
     @suit   = suit
-    @value  = card_value(value)
+    @value  = card_value(rating)
     @name   = rating + suit 
   end
 
   def card_value(value)
     if %w(J Q K).include?(value)
-      10
+      return 10
     elsif value == "A"
-      11
+      return 11
     else
-      value.to_i
+      return value.to_i
     end
   end 
 
