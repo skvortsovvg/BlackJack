@@ -1,6 +1,7 @@
 
 require 'io/console'
 require_relative 'card'
+require_relative 'dealer'
 
 # cards = "𝟚♠ 𝟛♠ 𝟜♠ 𝟝♠ 𝟞♠ 𝟟♠ 𝟠♠ 𝟡♠ 𝟙𝟘♠ 𝕁♠ ℚ♠ 𝕂♠ 𝔸♠".split(' ')
 cards = "2♠ 3♠ 4♠ 5♠ 6♠ 7♠ 8♠ 9♠ 10♠ J♠ Q♠ K♠ A♠".split(' ')
@@ -14,7 +15,7 @@ def print_shift(text)
   print "\t\t\t\t\t\t" + text
 end
 
-def print_layout(player, dialer)
+def print_layout(player, dealer)
 
   7.times do |i|
      str = TABLE.dup
@@ -38,7 +39,7 @@ def print_layout(player, dialer)
         end
       end
     end
-    dialer.each_with_index do |card, index|
+    dealer.each_with_index do |card, index|
       if card.nil? 
         str.gsub!("Д"+index.to_s, NONE)
       elsif !card.open?
@@ -62,37 +63,40 @@ def print_layout(player, dialer)
   end
 end
 
-start = true
+# start = true
 
-loop do 
+dealer = Dealer.new
+puts dealer.deck.size
 
-  system 'cls'
+# loop do 
 
-  input   = File.open("logo.txt",  "r")
+#   system 'cls'
 
-  while (line = input.gets) do
-   puts line
-  end
+#   input   = File.open("logo.txt",  "r")
 
-  if start 
-    print_shift "Нажмите любую клавиу для начала игры..."
-    STDIN.getch
-    print "\r"
-    start = false
-  end
+#   while (line = input.gets) do
+#    puts line
+#   end
+
+#   if start 
+#     print_shift "Нажмите любую клавиу для начала игры..."
+#     STDIN.getch
+#     print "\r"
+#     start = false
+#   end
   
-  print_shift "======================================="
+#   print_shift "======================================="
   
-  puts 
-  puts puts puts 
-  player = [Card.new(cards.sample), Card.new(cards.sample), nil, nil, nil]
-  player[0].open
-  player[1].open
+#   puts 
+#   puts puts puts 
+#   player = [Card.new(cards.sample), Card.new(cards.sample), nil, nil, nil]
+#   player[0].open
+#   player[1].open
 
-  dialer = [Card.new(cards.sample), Card.new(cards.sample), nil, nil, nil]
+#   dialer = [Card.new(cards.sample), Card.new(cards.sample), nil, nil, nil]
 
-  print_layout(player, dialer)
+#   print_layout(player, dialer)
 
-  break if STDIN.getch == "\e"
+#   break if STDIN.getch == "\e"
 
-end
+# end
