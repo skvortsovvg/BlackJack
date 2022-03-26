@@ -7,21 +7,24 @@ class Drawing
   P = ["███▀▀▀███", "█▀══▀▀═▀█", "█═█═══█═█", "███═█═███", "██▄▄█▄▄██", "          "]
   
   def initialize
-    system 'cls'
-    print_logo
-    $player = "Владимир"
-    P.unshift($player[..8] + ":")
+    # print_logo
+    # print "\t\t\t\t\tЗдравствуйте, игрок! Представьтесь, пожалуйста: " 
+    # $player = gets.chomp.capitalize[..8]
+    # refresh("Добро пожаловать, #{$player}! Нажмите клавишу, чтобы начать игру... ") 
     # STDIN.getch
+    $player = "Владимир"
+    P.unshift($player + ":")
   end
 
   def get_name
   end
 
-  def refresh(hands, msg)
-    system 'cls'
+  def refresh(msg, hands = nil)
     print_logo
-    print_layout(hands)
-    print_line
+    if !hands.nil?
+      print_layout(hands)
+      print_line
+    end
     print_s "\t #{msg} "; puts
     print_line
   end
@@ -36,6 +39,7 @@ class Drawing
   end
   
   def print_logo
+    system 'cls'
     input   = File.open("logo.txt",  "r")
     while (line = input.gets) do puts line end
     print_line
