@@ -1,26 +1,19 @@
 
 require 'io/console'
-require_relative 'card'
 require_relative 'dealer'
-require_relative 'hand'
 require_relative 'drawing'
-
-SMS = {draw: "НИЧЬЯ! Победила дружба!", player: "ВЫИГРЫШ! Вы явно побеждаете!", dealer: "ПРОИГРЫШ! Побеждает умный компютер!"}
-
-$player = ""
 
 dealer    = Dealer.new
 draw      = Drawing.new
 
 loop do
 
-msg = "Ещё карту? (Y/N) "
+  dealer.new_deal
 
   loop do 
     
-    draw.refresh(msg, dealer.hands)
+    draw.refresh("Ещё карту? (Y/N)", dealer)
     break if dealer.hands[:player].played?
-
     case STDIN.getch.capitalize
     when "Y"
       dealer.deal_card(:player).open
@@ -33,11 +26,26 @@ msg = "Ещё карту? (Y/N) "
 
   end
 
-  dealer.play { draw.refresh("Играет дилер...", dealer.hands) }
-  draw.refresh(SMS[dealer.result] + " Ещё партию?", dealer.hands)
-  STDIN.getch
-  dealer.new_deal
+  dealer.play { draw.refresh("Играет дилер...", dealer) }
+  draw.refresh(dealer.result + " Ещё партию? (Y/N) (Esc - выход)", dealer)
+  
+  case STDIN.getch.capitalize
+  when "\e" || "N"
+    exit 
+  end
+  
+  if dealer.bank[:player] == 0 or dealer.bank[:dealer] == 0
+    draw.refresh("ИГРА ОКОНЧЕНА! Денег нет! Перезапустить? (Y/N) (Esc - выход)")
+  
+    case STDIN.getch.capitalize
+    when "\e" || "N"
+      exit 
+    end
 
+    dealer = Dealer.new
+  
+  end
+  
 end
 
 # STDIN.getch

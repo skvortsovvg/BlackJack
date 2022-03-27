@@ -14,17 +14,22 @@ class Hand
     @played
   end
 
-  def add_card(card)
-    @cards << card
-    @played = score >= 21
+  def fail?
+    @fail
   end
 
-  def score
+  def add_card(card)
+    @cards << card
+    @score  = calculate
+    @played = @score >= 21
+    @fail   = @score > 21
+  end
+
+  def calculate(open_cards = false)
     @cards.sort_by { |card| card.value }.inject(0) do |sum, card|
-      # if !card.opened?
-      #   sum
-      # els
-      if card.value == 11
+      if open_cards && !card.opened?
+        sum
+      elsif card.value == 11
         sum + card.value > 21 ? sum + 1 : sum + card.value
       else
         sum + card.value

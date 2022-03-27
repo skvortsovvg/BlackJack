@@ -3,26 +3,26 @@ class Drawing
   SHIRT = "░░░░░░░░░"
   NONE = "\t"
   FACE  = %w(▓▓▓▓▓▓▓▓▓ ▓%%▓▓▓▓▓▓ ▓▓▓▓▓▓%%▓)
-  D = ["  ДИЛЕР: ", "███▀▀▀███", "█▀══▀▀═▀█", "█═█═══█═█", "███═█═███", "██▄▄█▄▄██", "          "]
-  P = ["███▀▀▀███", "█▀══▀▀═▀█", "█═█═══█═█", "███═█═███", "██▄▄█▄▄██", "          "]
+  D = ["'  ДИЛЕР: '", "'███▀▀▀███'", "'█▀══▀▀═▀█'", "'█═█═══█═█'", "'███═█═███'", "'██▄▄█▄▄██'", '"  $ #{dealer.bank[key]}  "']
+  P = ['"#{$player}:  "', "'███▀▀▀███'", "'█▀══▀▀═▀█'", "'█═█═══█═█'", "'███═█═███'", "'██▄▄█▄▄██'", '"  $ #{dealer.bank[key]}  "']
   
   def initialize
-    # print_logo
-    # print "\t\t\t\t\tЗдравствуйте, игрок! Представьтесь, пожалуйста: " 
-    # $player = gets.chomp.capitalize[..8]
-    # refresh("Добро пожаловать, #{$player}! Нажмите клавишу, чтобы начать игру... ") 
-    # STDIN.getch
-    $player = "Владимир"
-    P.unshift($player + ":")
+    print_logo
+    print "\t\t\t\t\tЗдравствуйте, игрок! Представьтесь, пожалуйста: " 
+    $player = gets.chomp.capitalize[..8]
+    refresh("Добро пожаловать, #{$player}! Нажмите клавишу, чтобы начать игру... ") 
+    $player = ("   " + $player) if $player.length <= 4 
+    STDIN.getch
   end
 
   def get_name
   end
 
-  def refresh(msg, hands = nil)
+  def refresh(msg, dealer = nil)
     print_logo
-    if !hands.nil?
-      print_layout(hands)
+    if !dealer.nil?
+      print_s " КОН: $ #{dealer.bid}"
+      print_layout(dealer)
       print_line
     end
     print_s "\t #{msg} "; puts
@@ -45,16 +45,16 @@ class Drawing
     print_line
   end
 
-  def print_layout(hands)
+  def print_layout(dealer)
 
     puts 
 
-    hands.each do |key, hand|
+    dealer.hands.each do |key, hand|
       7.times do |i|
         
         str = ["\t\t\t\t"];
-        str << (key == :dealer ? D[i] : P[i])
-
+        str << (key == :dealer ? eval(D[i]) : eval(P[i]))
+   
         (7-hand.cards.count).times { str << "\t"}
          
         hand.cards.each_with_index do |card, index|
@@ -74,9 +74,11 @@ class Drawing
           end
         end
         if hand.score > 0
-          str << "\t РЕЗУЛЬТАТ:" if i == 3
-          str << "\t #{hand.score} #{"X !ПЕРЕБОР!" if hand.score > 21}" if i == 4
+          str << "   РЕЗУЛЬТАТ:" if i == 2
+          str << "      #{hand.calculate(true)}" if i == 3
+          str << "   !ПЕРЕБОР!" if hand.fail? if i == 4 
         end
+
         puts str.join(' ')
       end
         puts
