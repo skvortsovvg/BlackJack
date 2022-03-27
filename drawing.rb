@@ -1,21 +1,20 @@
 class Drawing
 
-  SHIRT = "░░░░░░░░░"
-  NONE = "\t"
-  FACE  = %w(▓▓▓▓▓▓▓▓▓ ▓%%▓▓▓▓▓▓ ▓▓▓▓▓▓%%▓)
-  D = ["'  ДИЛЕР: '", "'███▀▀▀███'", "'█▀══▀▀═▀█'", "'█═█═══█═█'", "'███═█═███'", "'██▄▄█▄▄██'", '"  $ #{dealer.bank[key]}  "']
-  P = ['"#{$player}:  "', "'███▀▀▀███'", "'█▀══▀▀═▀█'", "'█═█═══█═█'", "'███═█═███'", "'██▄▄█▄▄██'", '"  $ #{dealer.bank[key]}  "']
+  SHIRT   = "░░░░░░░░░"
+  FACE    = %w(▓▓▓▓▓▓▓▓▓ ▓%%▓▓▓▓▓▓ ▓▓▓▓▓▓%%▓)
+  AVATAR  = ['', "'███▀▀▀███'", "'█▀══▀▀═▀█'", "'█═█═══█═█'", "'███═█═███'", "'██▄▄█▄▄██'", '"  $ #{dealer.bank[key]}  "']
   
   def initialize
     print_logo
+    meeting
+  end
+
+  def meeting
     print "\t\t\t\t\tЗдравствуйте, игрок! Представьтесь, пожалуйста: " 
     $player = gets.chomp.capitalize[..8]
     refresh("Добро пожаловать, #{$player}! Нажмите клавишу, чтобы начать игру... ") 
-    $player = ("   " + $player) if $player.length <= 4 
+    $player = ("   " + $player) if $player.length <= 2 
     STDIN.getch
-  end
-
-  def get_name
   end
 
   def refresh(msg, dealer = nil)
@@ -52,8 +51,8 @@ class Drawing
     dealer.hands.each do |key, hand|
       7.times do |i|
         
-        str = ["\t\t\t\t"];
-        str << (key == :dealer ? eval(D[i]) : eval(P[i]))
+        str = ["\t\t\t\t"] << eval(AVATAR[i])
+        str << (key == :dealer ? ' ДИЛЕР:  ' : "#{$player}:  " if i == 0)
    
         (7-hand.cards.count).times { str << "\t"}
          

@@ -1,5 +1,5 @@
 class Dealer
-  attr_reader :deck, :hands, :bank, :bid
+  attr_reader :hands, :bank, :bid
 
   require_relative 'card'
   require_relative 'hand'
@@ -7,8 +7,7 @@ class Dealer
   SMS = {draw: "НИЧЬЯ! Победила дружба!", player: "ВЫИГРЫШ! Вы явно побеждаете!", dealer: "ПРОИГРЫШ! Побеждает умный компютер!"}
   
   def initialize
-    @bank   = { dealer: 20, player: 20 }
-    @bid    = 0
+    @bank   = { dealer: 100, player: 100 }
   end
 
   def print_deck
@@ -41,10 +40,7 @@ class Dealer
   end
 
   def deal_card(whom)
-    card = deck.shift
-    release << card 
-    @hands[whom].add_card(card)
-    card
+    @hands[whom].add_card(@deck.shift)
   end
 
   def new_deck

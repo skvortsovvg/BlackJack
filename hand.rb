@@ -23,6 +23,7 @@ class Hand
     @score  = calculate
     @played = @score >= 21
     @fail   = @score > 21
+    return card
   end
 
   def calculate(open_cards = false)
