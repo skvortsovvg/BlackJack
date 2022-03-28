@@ -10,10 +10,6 @@ class Dealer
     @bank   = { dealer: 100, player: 100 }
   end
 
-  def print_deck
-    puts @deck.map { |card| card.name }.inspect
-  end
-
   def result
     who = if hands[:player].fail?  
       :dealer
@@ -27,7 +23,7 @@ class Dealer
     
     @bank[who] += @bid
     @bid        = 0 
-    SMS[who]
+    return SMS[who]
   end
 
   def new_deal
@@ -50,10 +46,6 @@ class Dealer
       %w(2 3 4 5 6 7 8 9 10 J Q K A).each { |value| @deck << Card.new(value, suit) }
     end
     @deck.shuffle!
-  end
-
-  def release
-    @release ||= []
   end
 
   def play
